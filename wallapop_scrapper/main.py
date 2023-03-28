@@ -9,13 +9,22 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def search_item_prices_in_wallapop(keyword: str):
-    browser = webdriver.Chrome()
+def search_item_prices_in_wallapop(keyword: str, headless: bool = True):
+    browser = init_browser(headless)
     url = create_request_url(keyword)
     browser.get(url)  # loads page
     click_on_accept_cookies(browser)
+    wait_for_prices_to_load(browser)
     prices = get_prices(browser)
     store_prices(keyword, prices)
+    browser.quit()
+
+
+def init_browser(headless: bool):
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless') if headless else ""
+    browser = webdriver.Chrome(options=options)
+    return browser
 
 
 def create_request_url(keyword):
@@ -37,14 +46,16 @@ def click_on_accept_cookies(browser):
     cookies_button.click()
 
 
+def wait_for_prices_to_load(browser):
+    WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//span[contains(@class, 'ItemCard__price')]"))
+    )
+
+
 def get_prices(browser):
-    cards = browser.find_elements(By.CLASS_NAME, "ItemCard")
-    print(len(cards))
-    prices = list()
-    for c in cards:
-        prices = c.find_elements(By.CLASS_NAME, "ItemCard_price").text
-    print(len(prices))
-    print(prices)
+    prices = browser.find_elements(By.XPATH, "//span[contains(@class, 'ItemCard__price ItemCard__price--bold')]")
+    prices = [price.text.strip().replace('€', '').replace(',', '.') for price in prices]
+    print(f"prices: {prices}")
     return prices
 
 
@@ -53,6 +64,10 @@ def store_prices(keyword, prices):
 
     # Store the prices in a Pandas DataFrame and save to a parquet file
     df = pd.DataFrame({'price': prices})
+    # df['link'].astype(str)
+    # df['title'].astype(str)
+    df['price'].astype(float)
+    # df['date'].astype(date)
     df.to_parquet(f'{keyword}_{today.isoformat()}.parquet')
 
 
