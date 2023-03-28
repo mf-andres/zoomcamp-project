@@ -70,4 +70,10 @@ Deploy Google infrastructure
 make deploy_google_infrastructure
 ```
 
+# Start
 
+Try to load and store some prices from wallapop
+
+```commandline
+make store-prices-example
+```
