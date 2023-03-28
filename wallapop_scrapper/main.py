@@ -9,14 +9,14 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def search_item_prices_in_wallapop(keyword: str, headless: bool = True):
+def search_item_prices_in_wallapop(keyword: str, headless: bool = False, store_data: bool = False):
     browser = init_browser(headless)
     url = create_request_url(keyword)
     browser.get(url)  # loads page
     click_on_accept_cookies(browser)
     wait_for_prices_to_load(browser)
     prices = get_prices(browser)
-    store_prices(keyword, prices)
+    store_prices(keyword, prices) if store_data else ""
     browser.quit()
 
 
