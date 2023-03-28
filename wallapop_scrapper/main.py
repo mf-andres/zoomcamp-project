@@ -1,12 +1,18 @@
 from datetime import date
 from urllib.parse import quote_plus
 
+import numpy as np
 import typer
 import pandas as pd
+import pyarrow as pa
+import pyarrow.parquet as pq
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+from utils.path_utils import get_project_root
 
 
 def search_item_prices_in_wallapop(keyword: str, headless: bool = False, store_data: bool = False):
@@ -61,14 +67,22 @@ def get_prices(browser):
 
 def store_prices(keyword, prices):
     today = date.today()
+    dates = np.repeat([today], len(prices))
 
-    # Store the prices in a Pandas DataFrame and save to a parquet file
-    df = pd.DataFrame({'price': prices})
-    # df['link'].astype(str)
-    # df['title'].astype(str)
-    df['price'].astype(float)
-    # df['date'].astype(date)
-    df.to_parquet(f'{keyword}_{today.isoformat()}.parquet')
+    # Store as Pandas DataFrame
+    df = pd.DataFrame({'price': prices, 'date': dates})
+
+    # Format
+    df['price'] = df['price'].astype(float)
+    schema = pa.schema([
+        ('price', pa.float32()),
+        ('date', pa.date32())
+    ])
+    table = pa.Table.from_pandas(df, schema=schema)
+
+    # Save to a parquet file
+    project_root = get_project_root()
+    pq.write_table(table, f'{project_root}/prices_files/{keyword}_{today.isoformat()}.parquet')
 
 
 if __name__ == '__main__':
