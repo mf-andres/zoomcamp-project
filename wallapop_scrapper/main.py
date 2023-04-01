@@ -67,14 +67,16 @@ def get_prices(browser):
 
 def store_prices(keyword, prices):
     today = date.today()
+    keywords = np.repeat([keyword], len(prices))
     dates = np.repeat([today], len(prices))
 
     # Store as Pandas DataFrame
-    df = pd.DataFrame({'price': prices, 'date': dates})
+    df = pd.DataFrame({'keyword': keywords, 'price': prices, 'date': dates})
 
     # Format
     df['price'] = df['price'].astype(float)
     schema = pa.schema([
+        ('keyword', pa.string()),
         ('price', pa.float32()),
         ('date', pa.date32())
     ])
