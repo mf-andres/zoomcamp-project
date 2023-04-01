@@ -1,10 +1,16 @@
 provider "google" {
-  credentials = file("./credentials/credentials.json")
-  project     = "zoomcamp-project-382011"
-  region      = "europe-southwest1"
+  credentials = file(var.credentials)
+  project     = var.project
+  region      = var.region
 }
 
-resource "google_storage_bucket" "my_bucket" {
-  name     = "zoomcamp-project-382011"
-  location = "europe-southwest1"
+resource "google_storage_bucket" "bucket" {
+  name     = var.project
+  location = var.region
+}
+
+resource "google_bigquery_dataset" "dataset" {
+  dataset_id = var.bq_dataset
+  project    = var.project
+  location   = var.region
 }

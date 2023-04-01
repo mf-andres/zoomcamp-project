@@ -32,7 +32,7 @@ Create a Google project and a service account.
 5. Click "Create Service Account". Enter a name for your service account and click "Create".
 
 6. In the "Service account permissions" section, grant the service account the appropriate roles and permissions for
-   your project. Grant the followin roles: "Storage Admin", ...
+   your project. Grant the followin roles: "Storage Admin", "BigQuery Admin", ...
 
 7. Click "Continue" and then "Done" to create the service account.
 
@@ -45,23 +45,13 @@ Create a Google project and a service account.
 Install terraform as told in their
 webpage. https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 
-Change the project id in main.tf and put yours as follows.
+Run the following commands to set your project id, region and credentials path. The following command will ask for them.
 
-```terraform
-provider "google" {
-  credentials = file("./credentials/credentials.json")
-  project     = "{{put your project id here}}"
-  region      = "europe-southwest1"
-}
 ```
-
-Change the name of the bucket that you are going to create in main.tf as follows.
-
-```terraform
-resource "google_storage_bucket" "my_bucket" {
-  name     = "{{put your bucket name here}}"
-  location = "europe-southwest1"
-}
+export TF_VAR_project="zoomcamp-project-382011"
+export TF_VAR_region="europe-southwest1"
+export TF_VAR_credentials="/home/amunoz/Proyectos/zoomcamp_project/credentials/credentials.json"
+export TF_VAR_bq_dataset="zoomcamp_project_382011"
 ```
 
 Deploy Google infrastructure
@@ -77,3 +67,10 @@ Try to load and store some prices from wallapop
 ```commandline
 make store-prices-example
 ```
+
+## TODO
+
+* Next step is to download the file from storage and upload it to big query (terraform python)
+* Then we need to set the transformation in dbt (terraform? docker? dbt)
+* Then we need to set the google studio (terraform python?)
+* Then we orchestrate it so that it works everyday (prefect)

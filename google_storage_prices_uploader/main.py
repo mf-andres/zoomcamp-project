@@ -5,7 +5,7 @@ from google.oauth2.service_account import Credentials
 from utils.path_utils import get_project_root
 
 
-def upload_prices_to_google_storage(prices_file: str):
+def upload_prices_to_storage(prices_file: str):
     # Set the name of your GCS bucket and Google Cloud project ID
     bucket_name = 'zoomcamp-project-382011'  # TODO config and also config in terraform
     project_id = 'zoomcamp-project-382011'
@@ -32,4 +32,4 @@ def upload_prices_to_google_storage(prices_file: str):
 
 
 if __name__ == '__main__':
-    typer.run(upload_prices_to_google_storage)
+    typer.run(upload_prices_to_storage)
