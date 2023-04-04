@@ -60,6 +60,15 @@ Deploy Google infrastructure
 make deploy_google_infrastructure
 ```
 
+To run the dbt models you may need to configure a new profile. To do this you will need to configure 
+a new profile. Fill it according to your Google cloud project id's.
+
+```commandline
+dbt profile new 'zoomcamp_project_dbt'
+```
+
+You may have to change the location on your profiles.yml according to your Google project region.
+
 # Start
 
 Try to load and store some prices from wallapop

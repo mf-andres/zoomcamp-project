@@ -15,6 +15,8 @@ selenium = "^4.8.3"
 google-cloud-storage = "^2.7.0"
 google-auth = "^2.16.3"
 google-cloud-bigquery = "^3.9.0"
+cryptography = ">=3.4,<4.0"
+dbt-bigquery = "^1.4.3"
 
 
 [build-system]
