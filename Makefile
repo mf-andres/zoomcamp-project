@@ -32,8 +32,11 @@ _   terraform apply
 store-prices-example:  ## Try the scrapper
 _   python -m wallapop_scrapper.main "pokemon verde hoja" --store-data
 
-upload-prices-to-storage-example: ## Try the uploader
+upload-prices-to-storage-example: ## Try the storage uploader
 _ python -m google_storage_prices_uploader.main 'pokemon verde hoja_2023-04-01.parquet'
 
-upload-prices-to-big-query-from-storage-example: ## Try the uploader
+upload-prices-to-big-query-from-storage-example: ## Try the big query uploader
 _ python -m google_big_query_prices_uploader.main 'pokemon verde hoja_2023-04-01.parquet'
+
+run-pipeline: ## Try the whole pipeline
+_ python -m prefect_pipeline.main

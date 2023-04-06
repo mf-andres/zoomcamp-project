@@ -1,6 +1,6 @@
 from prefect import task, flow
-from prefect.task_runners import SequentialTaskRunner
 
+from dbt_transformation_runner.main import run_dbt_transformation
 from google_big_query_prices_uploader.main import upload_prices_to_big_query_from_storage
 from google_storage_prices_uploader.main import upload_prices_to_storage
 from settings.settings import Settings
@@ -29,6 +29,11 @@ def upload_prices_to_big_query_from_storage_t(prices_file: str):
     upload_prices_to_big_query_from_storage(prices_file)
 
 
+@task
+def run_dbt_transformation_t():
+    run_dbt_transformation()
+
+
 @flow
 def wallapop_prices_flow(name="wallapop-prices-pipeline"):
     product_names = get_product_names()
@@ -37,5 +42,8 @@ def wallapop_prices_flow(name="wallapop-prices-pipeline"):
         prices_file = search_item_prices_in_wallapop_t(product_name, headless=True, store_data=True)
         upload_prices_to_storage_t(prices_file)
         upload_prices_to_big_query_from_storage_t(prices_file)
+        run_dbt_transformation()
+        # now you should go to looker studio and check changes
+
 
 wallapop_prices_flow()

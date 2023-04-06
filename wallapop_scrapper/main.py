@@ -24,7 +24,7 @@ def search_item_prices_in_wallapop(keyword: str, headless: bool = False, store_d
     prices = get_prices(browser)
     today = date.today()
     prices_file = get_prices_file_name(keyword, today)
-    prices_file = store_prices(keyword, prices, today, prices_file) if store_data else ""
+    store_prices(keyword, prices, today, prices_file) if store_data else ""
     browser.quit()
     return prices_file, prices
 
@@ -92,7 +92,6 @@ def store_prices(keyword, prices, today, prices_file_name):
     project_root = get_project_root()
     prices_file = f'{project_root}/prices_files/{prices_file_name}'
     pq.write_table(table, prices_file)
-    return prices_file
 
 
 if __name__ == '__main__':
