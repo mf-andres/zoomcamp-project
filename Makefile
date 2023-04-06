@@ -29,14 +29,19 @@ deploy_google_infrastructure: ## Create google cloud resources
 _   terraform init
 _   terraform apply
 
-store-prices-example:  ## Try the scrapper
+deploy_prefect_pipeline: ## Create the deployment and run an agent to run it
+_   prefect deployment build --name wallapop-prices-pipeline --work-queue zoomcamp-project --cron "0 3 * * *" prefect_pipeline.main:wallapop_prices_flow
+_   prefect deployment apply wallapop_prices_flow-deployment.yaml
+_   prefect agent start -p 'default-agent-pool'
+
+store_prices_example:  ## Try the scrapper
 _   python -m wallapop_scrapper.main "pokemon verde hoja" --store-data
 
-upload-prices-to-storage-example: ## Try the storage uploader
+upload_prices_to_storage_example: ## Try the storage uploader
 _ python -m google_storage_prices_uploader.main 'pokemon verde hoja_2023-04-01.parquet'
 
-upload-prices-to-big-query-from-storage-example: ## Try the big query uploader
+upload_prices_to_big_query_from_storage_example: ## Try the big query uploader
 _ python -m google_big_query_prices_uploader.main 'pokemon verde hoja_2023-04-01.parquet'
 
-run-pipeline: ## Try the whole pipeline
+run_pipeline: ## Try the whole pipeline
 _ python -m prefect_pipeline.main
