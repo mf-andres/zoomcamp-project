@@ -15,8 +15,10 @@ selenium = "^4.8.3"
 google-cloud-storage = "^2.7.0"
 google-auth = "^2.16.3"
 google-cloud-bigquery = "^3.9.0"
-cryptography = ">=3.4,<4.0"
+cryptography = "40.0.1"
 dbt-bigquery = "^1.4.3"
+pydantic = {extras = ["dotenv"], version = "^1.10.7"}
+prefect = "^2.9.0"
 
 
 [build-system]

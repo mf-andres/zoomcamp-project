@@ -3,13 +3,16 @@ from google.cloud import storage
 from google.cloud import bigquery
 from google.cloud.bigquery import TableReference
 from google.oauth2.service_account import Credentials
+
+from settings.settings import Settings
 from utils.path_utils import get_project_root
 
 
 def upload_prices_to_big_query_from_storage(prices_file: str):
-    project_id = 'zoomcamp-project-382011'
-    bucket_id = 'zoomcamp-project-382011'  # TODO config and also config in terraform
-    dataset_id = 'zoomcamp_project_382011'
+    settings = Settings(_env_file=get_project_root() / ".env")
+    project_id = settings.project_id
+    bucket_id = settings.bucket_id
+    dataset_id = settings.dataset_id
 
     # Get the credentials file
     credentials_path = get_project_root() / "credentials/credentials.json"

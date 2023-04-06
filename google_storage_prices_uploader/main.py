@@ -2,13 +2,15 @@ import typer
 from google.cloud import storage
 from google.oauth2.service_account import Credentials
 
+from settings.settings import Settings
 from utils.path_utils import get_project_root
 
 
 def upload_prices_to_storage(prices_file: str):
     # Set the name of your GCS bucket and Google Cloud project ID
-    bucket_name = 'zoomcamp-project-382011'  # TODO config and also config in terraform
-    project_id = 'zoomcamp-project-382011'
+    settings = Settings(_env_file=get_project_root() / ".env")
+    bucket_name = settings.bucket_id
+    project_id = settings.project_id
 
     # Set the name of the file you want to upload and the name you want to give it in the bucket
     destination_blob_name = f'{bucket_name}/prices_files/{prices_file}'

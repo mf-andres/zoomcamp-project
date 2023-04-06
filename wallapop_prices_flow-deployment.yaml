@@ -1,0 +1,44 @@
+###
+### A complete description of a Prefect Deployment for flow 'wallapop-prices-flow'
+###
+name: wallapop-prices-pipeline
+description: null
+version: d4ef52c694ff48e8df5380d78cda2bf3
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: null
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: wallapop-prices-flow
+manifest_path: null
+storage: null
+path: /home/amunoz/Proyectos/zoomcamp_project
+entrypoint: prefect_pipeline.main:wallapop_prices_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    name:
+      title: name
+      default: wallapop-prices-pipeline
+      position: 0
+  required: null
+  definitions: null
+timestamp: '2023-04-04T18:37:31.586940+00:00'

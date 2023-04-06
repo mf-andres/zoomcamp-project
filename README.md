@@ -69,6 +69,12 @@ dbt profile new 'zoomcamp_project_dbt'
 
 You may have to change the location on your profiles.yml according to your Google project region.
 
+Despliega la pipeline de ingestión de datos en tu servidor local de prefect. 
+
+```commandline
+prefect deployment apply
+```
+
 # Start
 
 Try to load and store some prices from wallapop

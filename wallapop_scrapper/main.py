@@ -22,8 +22,11 @@ def search_item_prices_in_wallapop(keyword: str, headless: bool = False, store_d
     click_on_accept_cookies(browser)
     wait_for_prices_to_load(browser)
     prices = get_prices(browser)
-    store_prices(keyword, prices) if store_data else ""
+    today = date.today()
+    prices_file = get_prices_file_name(keyword, today)
+    prices_file = store_prices(keyword, prices, today, prices_file) if store_data else ""
     browser.quit()
+    return prices_file, prices
 
 
 def init_browser(headless: bool):
@@ -65,8 +68,11 @@ def get_prices(browser):
     return prices
 
 
-def store_prices(keyword, prices):
-    today = date.today()
+def get_prices_file_name(keyword, today):
+    return f'{keyword}_{today.isoformat()}.parquet'
+
+
+def store_prices(keyword, prices, today, prices_file_name):
     keywords = np.repeat([keyword], len(prices))
     dates = np.repeat([today], len(prices))
 
@@ -84,7 +90,9 @@ def store_prices(keyword, prices):
 
     # Save to a parquet file
     project_root = get_project_root()
-    pq.write_table(table, f'{project_root}/prices_files/{keyword}_{today.isoformat()}.parquet')
+    prices_file = f'{project_root}/prices_files/{prices_file_name}'
+    pq.write_table(table, prices_file)
+    return prices_file
 
 
 if __name__ == '__main__':
