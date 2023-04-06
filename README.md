@@ -83,6 +83,14 @@ Try to load and store some prices from wallapop
 make store-prices-example
 ```
 
+Try to run the dbt models
+
+```commandline
+cd 
+make store-prices-example
+```
+
+
 ## TODO
 
 * Next step is to download the file from storage and upload it to big query (terraform python)
